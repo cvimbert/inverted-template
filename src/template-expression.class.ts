@@ -7,34 +7,31 @@ export class TemplateExpression {
     private variables: string[] = [];
 
     constructor(
-        private expressionText: string
+        private expressionText: string,
+        contentFormat: RegExp = null
     ) {
         // variables extraction
-        expressionText = escapeStringRegexp(expressionText);
-        let regExpText: string = "^" + expressionText + "$";
+        let regExpText: string = expressionText;
 
-        // TODO: faire un escape sur les caractères spéciaux (à voir si c'est utile)
-
-        //regExpText = RegExp.escape(regExpText);
-        //regExpText = regExpText.replace("*", "\\*");
-        //regExpText = regExpText.replace("[", "\\[");
+        regExpText = escapeStringRegexp(regExpText);
+        regExpText = "^" + regExpText + "$";
 
         let res: RegExpExecArray = Expressions.variable.exec(expressionText);
 
         while (res) {
-            regExpText = regExpText.replace(res[0], ".*");
+            regExpText = regExpText.replace("\\" + res[0], ".*");
             this.variables.push(res[0]);
             res = Expressions.variable.exec(expressionText);
         }
 
-        console.log(this.variables);
-
         this.expressionRegExp = new RegExp(regExpText);
-        console.log(this.expressionRegExp);
 
-        let testStr: string = "sprite(ok);state(yes)";
+        let testStr: string = "state(yes);sprite(ok)";
         console.log(regExpText, this.test(testStr));
-        console.log(this.extract(testStr));
+
+        if (this.test(testStr)) {
+            console.log(this.extract(testStr));
+        }
     }
 
     test(text: string): boolean {
@@ -52,19 +49,19 @@ export class TemplateExpression {
         let tab: string[] = this.expressionText.split(Expressions.variable);
         console.log(text, tab);
 
-        tab.forEach((textElem: string, index: number) => {
-            let elemIndex:number = extractionText.indexOf(textElem);
-            console.log(elemIndex);
+        for (let i: number = 0; i < tab.length - 1; i++) {
+            let variable: string = this.variables[i];
+            let textElem: string = tab[i];
+            let nextTextElem: string = tab[i + 1];
+            let elemStartIndex: number = extractionText.indexOf(textElem);
 
-            if (elemIndex !== -1) {
-                extractionText = extractionText.substr(elemIndex + textElem.length);
-                console.log("el", elemIndex, extractionText);
-            } else {
-                return null;
-            }
-        });
+            extractionText = extractionText.substring(elemStartIndex + textElem.length);
 
-        console.log("ext", extractionText);
+            let elemEndIndex: number = extractionText.indexOf(nextTextElem);
+
+            values[variable] = extractionText.slice(0, elemEndIndex);
+            extractionText = extractionText.substr(elemEndIndex);
+        }
 
         return values;
     }

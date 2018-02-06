@@ -14,5 +14,5 @@ op
 
 
 let template:RevertedTemplate = new RevertedTemplate(`
-sprite($spriteId);state($stateId)
+$spriteId|sprite($spriteId)|state($stateId);sprite($spriteId)
 `);

@@ -6,17 +6,17 @@ export class RevertedTemplate {
     private groups: TemplateGroup[] = [];
 
     constructor(
-        templateText: string
+        templateText: string,
+        contentFormat: RegExp = /temp/
     ) {
         let groupLines = this.getGroupLines(templateText);
 
         groupLines.forEach((line: string) => {
-            this.groups.push(new TemplateGroup(line));
+            this.groups.push(new TemplateGroup(line, contentFormat));
         });
     }
 
     getGroupLines(text: string): string[] {
-
         text = text.replace(Expressions.leftBracket, "[");
         text = text.replace(Expressions.rightBracket, "]");
 
