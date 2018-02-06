@@ -1,7 +1,7 @@
 import {Expressions} from "./expressions.class";
 import {TemplateGroup} from "./template-group.class";
 
-export class InvertedTemplate {
+export class RevertedTemplate {
 
     private groups: TemplateGroup[] = [];
 

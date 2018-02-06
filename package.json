@@ -30,5 +30,9 @@
     "ts-loader": "^3.0.5",
     "typescript": "^2.0.3",
     "webpack": "^3.8.1"
+  },
+  "dependencies": {
+    "@types/escape-string-regexp": "0.0.32",
+    "escape-string-regexp": "^1.0.5"
   }
 }

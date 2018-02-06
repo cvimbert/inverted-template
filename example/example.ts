@@ -1,6 +1,6 @@
-import {InvertedTemplate} from "../src/inverted-template.class";
+import {RevertedTemplate} from "../src/reverted-template.class";
 
-let template:InvertedTemplate = new InvertedTemplate(`
+/*let template:RevertedTemplate = new RevertedTemplate(`
 $spriteId|sprite($spriteId)|state($stateId)
 
 [
@@ -10,4 +10,9 @@ $spriteId|sprite($spriteId)|state($stateId)
 
 
 op
+`);*/
+
+
+let template:RevertedTemplate = new RevertedTemplate(`
+sprite($spriteId);state($stateId)
 `);
