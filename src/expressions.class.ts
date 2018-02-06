@@ -20,4 +20,7 @@ export class Expressions {
 
     // optional
     static optional: RegExp = /\s*\*.*\*\s*/;
+
+    // content format
+    static content: RegExp = /([A-Za-z0-9]+)/;
 }
