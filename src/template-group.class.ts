@@ -9,7 +9,7 @@ export class TemplateGroup {
 
     constructor(
         public textLine: string,
-        contentFormat: RegExp = null
+        contentFormat: string = null
     ) {
         if (Expressions.arrayGroup.test(textLine)) {
             this.type = GroupType.ARRAY;
@@ -20,9 +20,32 @@ export class TemplateGroup {
         expressionStrings.forEach((expression: string) => {
             this.expressions.push(new TemplateExpression(expression, contentFormat));
         });
+
+        let testStr: string = "state(yes);sprite(ok)";
+        console.log(this.extractFirstMatchingContent(testStr));
     }
 
     test(text: string): boolean {
-        return true;
+
+        for (let expression of this.expressions) {
+            if (expression.test(text)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    extractFirstMatchingContent(text: string): {[key: string]: string} {
+
+        for (let expression of this.expressions) {
+            let content: {[key: string]: string} = expression.extract(text);
+
+            if (content) {
+                return content;
+            }
+        }
+
+        return null;
     }
 }

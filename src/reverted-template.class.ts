@@ -7,7 +7,7 @@ export class RevertedTemplate {
 
     constructor(
         templateText: string,
-        contentFormat: RegExp = Expressions.content
+        contentFormat: string = "([A-Za-z0-9]+)"
     ) {
         let groupLines = this.getGroupLines(templateText);
 
