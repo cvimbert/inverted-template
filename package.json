@@ -1,5 +1,5 @@
 {
-  "name": "inverted-template",
+  "name": "reverted-template",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cvimbert/inverted-template.git"
+    "url": "git+https://github.com/cvimbert/reverted-template.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/cvimbert/inverted-template/issues"
+    "url": "https://github.com/cvimbert/reverted-template/issues"
   },
-  "homepage": "https://github.com/cvimbert/inverted-template#readme",
+  "homepage": "https://github.com/cvimbert/reverted-template#readme",
   "devDependencies": {
     "@types/core-js": "^0.9.37",
     "concurrently": "^3.0.0",

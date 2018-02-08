@@ -15,6 +15,13 @@ op
 
 let template:RevertedTemplate = new RevertedTemplate(`
 $spriteId|sprite($spriteId)|state($stateId);sprite($spriteId)
+[bidule($vari)]
+yop($v1);yep($v2);
 `);
 
-console.log(template.extract("state(yes);sprite(ok)"));
+console.log(template.extract(`
+state(yes);sprite(ok)
+bidule(test1)
+bidule(restest)
+yop(a);yep(b);
+`));

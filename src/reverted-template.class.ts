@@ -47,10 +47,29 @@ export class RevertedTemplate {
 
                 if (group.test(currentLine)) {
                     result.push(group.extractFirstMatchingContent(currentLine));
+                    lineIndex++;
+                } else {
+                    console.log("error parsing template line " + lineIndex + ", incomplete result");
+                    return result;
                 }
 
             } else if (group.type === GroupType.ARRAY) {
 
+                let groupArray:Object[] = [];
+                currentLine = lines[lineIndex];
+
+                while (group.test(currentLine)) {
+                    groupArray.push(group.extractFirstMatchingContent(currentLine));
+                    lineIndex++;
+                    currentLine = lines[lineIndex];
+                }
+
+                if (groupArray.length > 0) {
+                    result.push(groupArray);
+                } else {
+                    console.log("error parsing template line " + lineIndex + ", incomplete result");
+                    return result;
+                }
             }
 
         }

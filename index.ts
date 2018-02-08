@@ -1,0 +1,1 @@
+export * from "./src/reverted-template.class";

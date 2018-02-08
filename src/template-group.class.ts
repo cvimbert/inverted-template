@@ -13,6 +13,10 @@ export class TemplateGroup {
     ) {
         if (Expressions.arrayGroup.test(textLine)) {
             this.type = GroupType.ARRAY;
+
+            // brackets deletion
+            textLine = textLine.replace(Expressions.leftBracket, "");
+            textLine = textLine.replace(Expressions.rightBracket, "");
         }
 
         let expressionStrings: string[] = textLine.split(Expressions.or);
@@ -20,9 +24,6 @@ export class TemplateGroup {
         expressionStrings.forEach((expression: string) => {
             this.expressions.push(new TemplateExpression(expression, contentFormat));
         });
-
-        /*let testStr: string = "state(yes);sprite(ok)";
-        console.log(this.extractFirstMatchingContent(testStr));*/
     }
 
     test(text: string): boolean {

@@ -2,11 +2,11 @@ var webpack = require("webpack");
 var path = require("path");
 
 module.exports = {
-    entry: './core/index.ts',
+    entry: './index.ts',
     output: {
-        filename: "./dist/blip.umd.js",
+        filename: "./dist/reverted-template.umd.js",
         libraryTarget: 'umd',
-        library: "Blip"
+        library: "RevertedTemplate"
     },
     resolve: {
         extensions: [".webpack.js", ".web.js", ".js", ".ts"],
