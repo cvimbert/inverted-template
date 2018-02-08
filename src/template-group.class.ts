@@ -21,8 +21,8 @@ export class TemplateGroup {
             this.expressions.push(new TemplateExpression(expression, contentFormat));
         });
 
-        let testStr: string = "state(yes);sprite(ok)";
-        console.log(this.extractFirstMatchingContent(testStr));
+        /*let testStr: string = "state(yes);sprite(ok)";
+        console.log(this.extractFirstMatchingContent(testStr));*/
     }
 
     test(text: string): boolean {

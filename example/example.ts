@@ -16,3 +16,5 @@ op
 let template:RevertedTemplate = new RevertedTemplate(`
 $spriteId|sprite($spriteId)|state($stateId);sprite($spriteId)
 `);
+
+console.log(template.extract("state(yes);sprite(ok)"));
