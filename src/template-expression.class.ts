@@ -10,13 +10,17 @@ export class TemplateExpression {
 
     constructor(
         private expressionText: string,
-        contentFormat: string = null
+        contentFormat: string = null,
+        private isOptional: boolean = false
     ) {
         // variables extraction
         let regExpText: string = expressionText;
 
         regExpText = escapeStringRegexp(regExpText);
-        regExpText = `^${regExpText}$`;
+
+        if (!isOptional) {
+            regExpText = `^${regExpText}$`;
+        }
 
         // here for optional expressions
 
@@ -26,17 +30,26 @@ export class TemplateExpression {
             expressionText = expressionText.replace(optionsRes[0], "");
             let subExpText: string = optionsRes[0].replace(/\*/g, "");
 
-            let replacement: string = "(" + escapeStringRegexp(optionsRes[0].substring(1, optionsRes[0].length - 1)) + ")?";
+            let replacement: string = `(${escapeStringRegexp(optionsRes[0].substring(1, optionsRes[0].length - 1))})?`;
             regExpText = regExpText.replace(escapeStringRegexp(optionsRes[0]), replacement);
 
-            this.optionalExpressions.push(new TemplateExpression(subExpText, contentFormat));
+            this.optionalExpressions.push(new TemplateExpression(subExpText, contentFormat,true));
             optionsRes = Expressions.optional.exec(expressionText);
         }
 
-        let res: RegExpExecArray = Expressions.variable.exec(expressionText);
+        // TODO: ne pas utiliser regExpText ici
+        let res: RegExpExecArray = Expressions.variable.exec(regExpText);
 
         while (res) {
             regExpText = regExpText.replace(`\\${res[0]}`, contentFormat);
+            res = Expressions.variable.exec(regExpText);
+        }
+
+        // TODO: idem, mais avec seulement l'expression sans les valeurs optionnelles
+
+        res = Expressions.variable.exec(expressionText);
+
+        while (res) {
             this.variables.push(res[0]);
             res = Expressions.variable.exec(expressionText);
         }
@@ -45,8 +58,6 @@ export class TemplateExpression {
         this.contentRegExp = new RegExp(contentFormat);
 
         expressionText = expressionText.replace(Expressions.optional, "");
-        console.log(expressionText);
-        console.log(this.expressionRegExp);
     }
 
     test(text: string): boolean {
@@ -81,6 +92,20 @@ export class TemplateExpression {
                 values[variable] = extractionText.slice(0, elemEndIndex);
                 extractionText = extractionText.substr(elemEndIndex);
             }
+
+            // et les expressions optionnelles
+
+            this.optionalExpressions.forEach((expression: TemplateExpression) => {
+                let optionalValues: Object = expression.extract(text);
+
+                if (optionalValues) {
+                    let keys: string[] = Object.keys(optionalValues);
+
+                    keys.forEach((key:string) => {
+                        values[key] = optionalValues[key];
+                    });
+                }
+            });
 
             return values;
         } else {

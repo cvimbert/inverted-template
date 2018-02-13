@@ -23,5 +23,5 @@ console.log(template.extract(`
 state(yes);sprite(ok)
 bidule(test1)
 bidule(restest)
-yop(a);yep(b);
+opt(uuuu);yop(a);yep(b);
 `));
