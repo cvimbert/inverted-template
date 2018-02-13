@@ -19,7 +19,13 @@ export class Expressions {
     static or: RegExp = /\s*\|\s*/;
 
     // optional
-    static optional: RegExp = /\s*\*.*\*\s*/;
+    static optional: RegExp = /\s*\*.*\*\s*/g;
+
+    // right option
+    static leftOption: RegExp = /\*\n*/;
+
+    // right option
+    static rightOption: RegExp = /\n*\*/;
 
     // content format
     static content: RegExp = /([A-Za-z0-9]+)/;

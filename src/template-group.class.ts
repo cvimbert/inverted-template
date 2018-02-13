@@ -6,6 +6,7 @@ export class TemplateGroup {
 
     private expressions: TemplateExpression[] = [];
     type: GroupType = GroupType.BASIC;
+    optional: boolean = false;
 
     constructor(
         public textLine: string,

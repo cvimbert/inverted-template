@@ -49,8 +49,7 @@ export class RevertedTemplate {
                     result.push(group.extractFirstMatchingContent(currentLine));
                     lineIndex++;
                 } else {
-                    console.log("error parsing template line " + lineIndex + ", incomplete result");
-                    return result;
+                    this.incomplete(lineIndex, result);
                 }
 
             } else if (group.type === GroupType.ARRAY) {
@@ -67,13 +66,17 @@ export class RevertedTemplate {
                 if (groupArray.length > 0) {
                     result.push(groupArray);
                 } else {
-                    console.log("error parsing template line " + lineIndex + ", incomplete result");
-                    return result;
+                    this.incomplete(lineIndex, result);
                 }
             }
 
         }
 
+        return result;
+    }
+
+    incomplete(lineIndex:number, result:Object) {
+        console.warn(`Error parsing template line ${ lineIndex + 1 }, incomplete result`);
         return result;
     }
 }

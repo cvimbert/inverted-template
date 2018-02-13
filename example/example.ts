@@ -16,7 +16,7 @@ op
 let template:RevertedTemplate = new RevertedTemplate(`
 $spriteId|sprite($spriteId)|state($stateId);sprite($spriteId)
 [bidule($vari)]
-yop($v1);yep($v2);
+*opt($optv);*yop($v1);yep($v2);
 `);
 
 console.log(template.extract(`
