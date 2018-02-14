@@ -70,15 +70,11 @@ export class TemplateExpression {
 
     extract(text: string): {[key: string]: string} {
 
-        // TODO: vérifier l'utilité de cleanExpressionText
         let cleanExpressionText: string = this.expressionText.replace(Expressions.optional, "");
-
-        //console.log(cleanExpressionText);
 
         if (this.test(text)) {
             let values: {[key: string]: string} = {};
             let extractionText: string = text;
-            console.log(extractionText);
 
             // les expressions optionnelles
 
@@ -88,8 +84,6 @@ export class TemplateExpression {
                 if (values) {
                     extractionText = extractionText.replace(expression.expressionRegExp, '');
                 }
-                // suppression de extractionText de la valeur testée
-                console.log("->", expression);
             });
 
             values = !values ? {} : values;
@@ -101,14 +95,7 @@ export class TemplateExpression {
                 let textElem: string = tab[i];
                 let nextTextElem: string = tab[i + 1];
 
-                // attention : index à 0 si textElem === "" (par défaut, if suivant inutile)
-                let elemStartIndex: number;
-
-                if (textElem !== "") {
-                    elemStartIndex = extractionText.indexOf(textElem);
-                } else {
-                    elemStartIndex = 0;
-                }
+                let elemStartIndex: number = extractionText.indexOf(textElem);
 
                 extractionText = extractionText.substring(elemStartIndex + textElem.length);
 
