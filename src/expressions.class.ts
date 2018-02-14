@@ -10,7 +10,7 @@ export class Expressions {
     static rightBracket: RegExp = /\n*\]/;
 
     // used to split groups
-    static groupSplitter: RegExp = /\n+/;
+    static groupSplitter: RegExp = /\n+|;+/;
 
     // array group
     static arrayGroup: RegExp = /^\[.*\]$/;

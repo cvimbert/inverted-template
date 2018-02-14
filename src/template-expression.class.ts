@@ -70,12 +70,29 @@ export class TemplateExpression {
 
     extract(text: string): {[key: string]: string} {
 
-        // TODO: à supprimer quand les expressions optionnelles sont prêtes
+        // TODO: vérifier l'utilité de cleanExpressionText
         let cleanExpressionText: string = this.expressionText.replace(Expressions.optional, "");
+
+        //console.log(cleanExpressionText);
 
         if (this.test(text)) {
             let values: {[key: string]: string} = {};
             let extractionText: string = text;
+            console.log(extractionText);
+
+            // les expressions optionnelles
+
+            this.optionalExpressions.forEach((expression: TemplateExpression) => {
+                values = expression.extract(text);
+
+                if (values) {
+                    extractionText = extractionText.replace(expression.expressionRegExp, '');
+                }
+                // suppression de extractionText de la valeur testée
+                console.log("->", expression);
+            });
+
+            values = !values ? {} : values;
 
             let tab: string[] = cleanExpressionText.split(Expressions.variable);
 
@@ -83,29 +100,31 @@ export class TemplateExpression {
                 let variable: string = this.variables[i];
                 let textElem: string = tab[i];
                 let nextTextElem: string = tab[i + 1];
-                let elemStartIndex: number = extractionText.indexOf(textElem);
+
+                // attention : index à 0 si textElem === "" (par défaut, if suivant inutile)
+                let elemStartIndex: number;
+
+                if (textElem !== "") {
+                    elemStartIndex = extractionText.indexOf(textElem);
+                } else {
+                    elemStartIndex = 0;
+                }
 
                 extractionText = extractionText.substring(elemStartIndex + textElem.length);
 
-                let elemEndIndex: number = extractionText.indexOf(nextTextElem);
+                let elemEndIndex: number;
+
+                if (nextTextElem !== "") {
+                    elemEndIndex = extractionText.indexOf(nextTextElem);
+
+                } else {
+                    // end of string
+                    elemEndIndex = extractionText.length;
+                }
 
                 values[variable] = extractionText.slice(0, elemEndIndex);
                 extractionText = extractionText.substr(elemEndIndex);
             }
-
-            // et les expressions optionnelles
-
-            this.optionalExpressions.forEach((expression: TemplateExpression) => {
-                let optionalValues: Object = expression.extract(text);
-
-                if (optionalValues) {
-                    let keys: string[] = Object.keys(optionalValues);
-
-                    keys.forEach((key:string) => {
-                        values[key] = optionalValues[key];
-                    });
-                }
-            });
 
             return values;
         } else {
